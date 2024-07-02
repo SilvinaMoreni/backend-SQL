@@ -7,6 +7,7 @@ const buscarUsuarioPorEmail = async (email) =>{
     try {
         const consultaExistencia = `SELECT * FROM usuarios WHERE email = ?`
         const resultados = await query(consultaExistencia, [email])
+        console.log(resultados)
         if(resultados.length > 0){
             return resultados[0]
         }
