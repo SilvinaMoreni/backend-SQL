@@ -58,7 +58,7 @@ const loginService = async (usuario) =>{
             throw error
         }
         else{
-            throw {status: 500, message: 'Error interno del servidor'}
+            throw {status: 500, message: 'Error interno del servidor en servicio de logeo'}
         }
     }
 }
