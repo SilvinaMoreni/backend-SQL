@@ -51,7 +51,7 @@ for(let propery of propiedades){
 Object.keys(objeto) Les va a dar un array de propiedades
 */
 
-const { crearProducto, obtenerProductoPorId, eliminarProductoPorId, buscarProductos } = require("./products.service")
+const { crearProducto, obtenerProductoPorId, eliminarProductoPorId, buscarProductos, editarProductoPorId } = require("./products.service")
 
 const postProductController = async (req, res) =>{
 
@@ -62,6 +62,20 @@ const postProductController = async (req, res) =>{
     }
     catch(error){
 
+        res.status(error.status).json(error)
+    }
+}
+
+const putProductByIdController = async (req, res) => {
+    try{
+        const {pid} = req.params
+        if( !(pid && !isNaN(pid))  ){
+            throw {status: 400, message: 'El parametro pid debe ser un valor numerico valido'}
+        }
+        const result = await editarProductoPorId(pid,req.body)
+        res.status(200).json(result)
+    }
+    catch(error){
         res.status(error.status).json(error)
     }
 }
@@ -79,6 +93,7 @@ const getProductByIdController = async (req, res) => {
         res.status(error.status).json(error)
     }
 }
+
 
 const deleteProductByIdController = async (req, res)=>{
     try{
@@ -108,4 +123,4 @@ const getAllProducts = async (req, res) => {
 
 
 
-module.exports = {postProductController, getProductByIdController, deleteProductByIdController, getAllProducts}
+module.exports = {postProductController, getProductByIdController, deleteProductByIdController, getAllProducts, putProductByIdController}

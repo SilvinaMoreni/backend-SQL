@@ -1,5 +1,5 @@
 const { CustomError } = require("../errors/customErrorManager")
-const { insertarProducto, seleccionarProductoPorId, deleteProductoPorId, seleccionarProductos } = require("./products.repository")
+const { insertarProducto, seleccionarProductoPorId, deleteProductoPorId, seleccionarProductos, editarProducto } = require("./products.repository")
 const { validarPropiedadesProducto } = require("./utils/validarProducto")
 
 const crearProducto = async (producto) =>{
@@ -24,6 +24,23 @@ const crearProducto = async (producto) =>{
         }
     }
 }
+
+const editarProductoPorId = async (pid,producto) =>{
+    try {
+        validarPropiedadesProducto(producto)
+        const modificarProducto = await editarProducto(pid, producto)
+        return { status: 200, message: 'PRODUCTO MODIFICADO CORRECTAMENTE',producto:modificarProducto }
+      } catch (error) {
+        if (error.status) {
+          throw error
+        }
+        else {
+          throw { status: 500, message: 'ERROR DESCONOCIDO.',details: error.message || error }
+        }
+      }
+    }
+    
+
 
 const obtenerProductoPorId = async (pid) =>{
     try{
@@ -72,7 +89,7 @@ const buscarProductos = async () => {
 } 
 
 
-module.exports = {crearProducto, obtenerProductoPorId, eliminarProductoPorId, buscarProductos}
+module.exports = {crearProducto, obtenerProductoPorId, eliminarProductoPorId, buscarProductos, editarProductoPorId}
 
 
 

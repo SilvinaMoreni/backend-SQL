@@ -1,5 +1,5 @@
 const express = require('express')
-const { postProductController, getProductByIdController, deleteProductByIdController, getAllProducts } = require('./products.controller')
+const { postProductController, getProductByIdController, deleteProductByIdController, getAllProducts, putProductByIdController } = require('./products.controller')
 
 const productRouter = express.Router()
 
@@ -22,7 +22,7 @@ TODO: Agregar el middleware de verificacion de token
 
 productRouter.get('/', getAllProducts)
 productRouter.post('/', postProductController)
-productRouter.put('/')
+productRouter.put('/:pid', putProductByIdController)
 productRouter.delete('/:pid', deleteProductByIdController)
 productRouter.get('/:pid', getProductByIdController)
 

@@ -1,6 +1,26 @@
 const { query } = require("../config/connection.sql")
 
 
+const editarProducto = async (pid, producto) => {
+    const { titulo, descripcion, stock, precio, codigo } = producto;
+    try {
+      const consultaString = 'UPDATE productos SET titulo = ?, descripcion = ?, stock = ?, precio = ?, codigo = ? WHERE id = ?';
+      const valores = [titulo, descripcion, stock, precio, codigo, pid]; // pid needs to be included in the array
+      const resultado = await query(consultaString, valores);
+  
+      if (resultado.affectedRows === 0) {
+        throw { status: 404, message: 'PRODUCTO CON ID ' + pid + ' NO ENCONTRADO' };
+      }
+      
+      return resultado;
+    } catch (error) {
+      if (error.status === 404) {
+        throw error;
+      } else {
+        throw { status: 500, message: 'ERROR INTERNO EN LA BASE DE DATOS.', error };
+      }
+    }
+  }
 const insertarProducto = async ({titulo, descripcion, precio, stock, codigo}) => {
     try{
         const consultaString = 'INSERT INTO productos (titulo, descripcion, stock, precio, codigo) VALUES (?,?,?,?,?)'
@@ -78,4 +98,4 @@ const seleccionarProductos = async () =>{
 }
 
 
-module.exports = { insertarProducto, seleccionarProductoPorId, deleteProductoPorId, seleccionarProductos}
+module.exports = { insertarProducto, seleccionarProductoPorId, deleteProductoPorId, seleccionarProductos, editarProducto}
